@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "tsnd --cls --rs src/server.ts",
     "migrate": "prisma migrate dev"
   },
   "author": "",

@@ -5,8 +5,7 @@ export class AccountController {
     private accountService = new AccountService()
 
     public create = async ( req: Request, res: Response) => {
-        const account = this.accountService.create(req.body)
-
+        const account = await this.accountService.create(req.body)
 
         return res.status(201).json(account);
     };

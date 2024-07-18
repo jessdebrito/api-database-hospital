@@ -15,7 +15,7 @@ export class AccountService {
 
     public findAll = async () => {
         const accounts = await prisma.account.findMany();
-        return accountWithoutPasswordSchema.array().parse;
+        return accountWithoutPasswordSchema.array().parse(accounts);
     };
 }
 

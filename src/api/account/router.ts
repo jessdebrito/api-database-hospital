@@ -1,7 +1,6 @@
 import { Router } from "express";
+import { AccountController } from "./controller";
 
 export const accountRouter = Router();
-
-accountRouter.post("", (req, res) => {
-    return res.status(201).json({ message: "POST /accounts" })
-})
+const accountController = new AccountController();
+accountRouter.post("", accountController.create);

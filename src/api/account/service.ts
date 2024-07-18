@@ -12,4 +12,10 @@ export class AccountService {
 
         return accountWithoutPasswordSchema.parse(newAccount);
     };
+
+    public findAll = async () => {
+        const accounts = await prisma.account.findMany();
+        return accountWithoutPasswordSchema.array().parse;
+    };
 }
+

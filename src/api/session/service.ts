@@ -1,4 +1,5 @@
 import { prisma } from "../../../prisma/prisma.client";
+import { ApiError } from "../@shared/errors";
 import { SessionLogin } from "./interfaces";
 import * as bcrypt from "bcryptjs";
 
@@ -8,7 +9,14 @@ export class SessionService {
             where: { email: payload.email },
     });
 
-    const passwordMatch = await bcrypt.compare(payload.password, account?.password)
+    if(!account) {
+        throw new ApiError("Invalid credentials", 401)
+    }
+
+    const passwordMatch = await bcrypt.compare(
+        payload.password,
+         account.password
+        );
 
 
         return ({ message: "POST /login"});

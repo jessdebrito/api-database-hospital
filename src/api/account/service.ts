@@ -1,17 +1,18 @@
 import { prisma } from "../../../prisma/prisma.client";
-import { AccountCreate, AccountUpdate } from "./interfaces";
+import { AccountCreate, AccountUpdate, IAccountService } from "./interfaces";
 import { hashPassword } from "./utils";
 import { accountWithoutPasswordSchema } from "./schemas";
-import { ApiError } from "../@shared/errors";
 import { AccountNotFoundError, EmailAlreadyUsedError } from "./errors";
+import { injectable } from "tsyringe";
 
-export class AccountService {
+@injectable()
+export class AccountService implements IAccountService {
+  
   public findByEmail = async (email: string) => {
     const account = prisma.account.findUnique({ where: { email } });
 
     return account;
   };
-
   public create = async (payload: AccountCreate) => {
     const hasDuplicatedEmail = await this.findByEmail(payload.email);
 
@@ -24,6 +25,7 @@ export class AccountService {
 
     return accountWithoutPasswordSchema.parse(newAccount);
   };
+ 
 
   public findAll = async () => {
     const accounts = await prisma.account.findMany();
@@ -42,9 +44,7 @@ export class AccountService {
   };
 
   public partialUpdate = async (id: number, payload: AccountUpdate) => {
-
     await this.findById(id);
-
 
     if (payload.email) {
       const hasDuplicatedEmail = await this.findByEmail(payload.email);
@@ -64,5 +64,9 @@ export class AccountService {
     });
 
     return accountWithoutPasswordSchema.parse(updatedAccount);
+  };
+
+  public delete = async (id: number) => {
+    
   };
 }

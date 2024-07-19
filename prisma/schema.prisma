@@ -13,7 +13,7 @@ model Account {
   email      String   @unique @db.VarChar(100)
   password   String   @db.VarChar(255)
   createdAt  DateTime @default(now()) @map("created_at")
-  updateddAt DateTime @default(now()) @map("updated_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
   patients Patient[]
 

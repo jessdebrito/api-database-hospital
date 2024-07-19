@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { accountCreateSchema } from "../account/schemas";
+import { accountSchema } from "../account/schemas";
 
-export const sessionLoginSchema = accountCreateSchema.pick({
+export const sessionLoginSchema = accountSchema.pick({
     email: true,
     password: true,
 });

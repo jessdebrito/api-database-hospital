@@ -1,2 +1,8 @@
-export { ApiError, ConflictError, NotFoundError } from "./api.error";
-export { handleGlobalErrors } from "./handle.global.error";
+export {
+    ApiError,
+    ConflictError,
+    NotFoundError,
+    ForbiddenError,
+  } from "./api.error";
+  export { handleGlobalErrors } from "./handle.global.error";
+  

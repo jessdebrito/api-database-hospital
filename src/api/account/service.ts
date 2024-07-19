@@ -4,6 +4,7 @@ import { hashPassword } from "./utils";
 import { accountWithoutPasswordSchema } from "./schemas";
 import { ApiError } from "../@shared/errors";
 import { AccountNotFoundError, EmailAlreadyUsedError } from "./errors";
+import { hash } from "bcryptjs";
 
 export class AccountService {
 
@@ -53,6 +54,11 @@ export class AccountService {
       if (hasDuplicatedEmail) {
         throw new EmailAlreadyUsedError();
       }
+    }
+
+    if(payload.password){
+      payload.password = await hashPassword(payload.password);
+
     }
 
     const updatedAccount = await prisma.account.update({

@@ -4,22 +4,19 @@ import { hashPassword } from "./utils";
 import { accountWithoutPasswordSchema } from "./schemas";
 import { ApiError } from "../@shared/errors";
 import { AccountNotFoundError, EmailAlreadyUsedError } from "./errors";
-import { hash } from "bcryptjs";
 
 export class AccountService {
-
   public findByEmail = async (email: string) => {
     const account = prisma.account.findUnique({ where: { email } });
 
     return account;
   };
 
-
   public create = async (payload: AccountCreate) => {
     const hasDuplicatedEmail = await this.findByEmail(payload.email);
 
     if (hasDuplicatedEmail) {
-      throw new EmailAlreadyUsedError()
+      throw new EmailAlreadyUsedError();
     }
 
     payload.password = await hashPassword(payload.password);
@@ -38,13 +35,14 @@ export class AccountService {
     const account = await prisma.account.findUnique({ where: { id } });
 
     if (!account) {
-      throw new AccountNotFoundError()
+      throw new AccountNotFoundError();
     }
 
-    return account;
+    return accountWithoutPasswordSchema.parse(account);
   };
 
   public partialUpdate = async (id: number, payload: AccountUpdate) => {
+
     await this.findById(id);
 
 
@@ -56,9 +54,8 @@ export class AccountService {
       }
     }
 
-    if(payload.password){
+    if (payload.password) {
       payload.password = await hashPassword(payload.password);
-
     }
 
     const updatedAccount = await prisma.account.update({

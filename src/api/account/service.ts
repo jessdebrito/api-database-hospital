@@ -7,12 +7,12 @@ import { injectable } from "tsyringe";
 
 @injectable()
 export class AccountService implements IAccountService {
-  
   public findByEmail = async (email: string) => {
     const account = prisma.account.findUnique({ where: { email } });
 
     return account;
   };
+
   public create = async (payload: AccountCreate) => {
     const hasDuplicatedEmail = await this.findByEmail(payload.email);
 
@@ -25,7 +25,6 @@ export class AccountService implements IAccountService {
 
     return accountWithoutPasswordSchema.parse(newAccount);
   };
- 
 
   public findAll = async () => {
     const accounts = await prisma.account.findMany();
@@ -67,6 +66,6 @@ export class AccountService implements IAccountService {
   };
 
   public delete = async (id: number) => {
-    
+    // algo
   };
 }

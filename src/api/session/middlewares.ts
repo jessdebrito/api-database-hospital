@@ -19,7 +19,7 @@ export function isAuthenticated(
     throw new ApiError("Missing token Bearer prefix", 401);
   }
 
-  res.locals.accountId = verifyToken(token);
+  res.locals.decodedToken = verifyToken(token);
 
   return next();
 }

@@ -4,10 +4,9 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class AccountController {
-
   constructor(
     @inject("AccountService") private accountService: IAccountService
-  ) { }
+  ) {}
 
   public create = async (req: Request, res: Response) => {
     const account = await this.accountService.create(req.body);

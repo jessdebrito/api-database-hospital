@@ -13,7 +13,7 @@ export function generateToken(payload: object = {}, userId: number) {
 export function verifyToken(token: string) {
   const secret = parsedEnv.JWT_SECRET;
 
-  const { sub } = jwt.verify(token, secret);
+  const jwtPayload = jwt.verify(token, secret);
 
-  return sub;
+  return jwtPayload;
 }

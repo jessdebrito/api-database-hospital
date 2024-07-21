@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, request, response } from "express";
 import { ForbiddenError } from "../@shared/errors";
 
 export function isAccountOwner(
@@ -6,16 +6,25 @@ export function isAccountOwner(
   res: Response,
   next: NextFunction
 ) {
-
   const accountIdParam = req.params.id;
 
-
   const { accountId } = res.locals;
-
 
   if (accountIdParam !== accountId) {
     throw new ForbiddenError();
   }
+
+  return next();
+}
+
+export function isNurse(req: Request, res: Response, next: NextFunction) {
+  const { decodedToken } = res.locals;
+
+  if (decodedToken.role !== "NURSE") {
+    throw new ForbiddenError();
+  }
+
+  req.body.createdById = Number(decodedToken.sub);
 
   return next();
 }

@@ -7,16 +7,13 @@ import jwt from "jsonwebtoken";
 
 export class SessionService {
   public login = async (payload: SessionLogin) => {
-
     const account = await prisma.account.findUnique({
       where: { email: payload.email },
     });
 
-
     if (!account) {
       throw new ApiError("Invalid credentials", 401);
     }
-
 
     const passwordMatch = await bcrypt.compare(
       payload.password,
@@ -27,7 +24,10 @@ export class SessionService {
       throw new ApiError("Invalid credentials", 401);
     }
 
-    const token = generateToken({ fullName: account.fullName }, account.id);
+    const token = generateToken(
+      { fullName: account.fullName, role: account.role },
+      account.id
+    );
 
     return token;
   };
